@@ -1,42 +1,53 @@
-# Project Name
+---
+services: azure-maps
+platforms: dotnet
+author: ihvo
+---
 
-(short, 1-3 sentenced, description of the project)
+# Developing a .NET UWP application using Azure Maps, IoT hub and Bot service
 
-## Features
+This is a sample application that shows how Azure Maps, IoT hub and Bot service API can work together. We will extend the Azure Maps browser application to create a remotely controlled interactive map using Azure IoT and Azure Maps services.
 
-This project framework provides the following features:
+## Prerequisites
 
-* Feature 1
-* Feature 2
-* ...
+Before you can run this sample, you must have the following prerequisites:
 
-## Getting Started
+* An active Azure account. If you don't have one, you can sign up for a [free account](https://azure.microsoft.com/free/).
+* Windows 10 Creators Update (Build 15063)
+* Visual Studio 2017
+* Universal Windows Platform tools for VS2017
+* ASP.NET and web development tools for VS2017
 
-### Prerequisites
+## Getting started
 
-(ideally very short, if any)
+1. Clone this repository using `git clone git@github.com:azure-samples/azure-maps-dotnet-webgl-uwp-iot-remote-control.git`
+2. Open `MapApplication\MapApplication.sln` in VS2017.
+3. Setup device connection string
+    * Register a device named `map-display` and obtain device connection string by following steps from the [Device Control Quickstart](https://docs.microsoft.com/en-us/azure/iot-hub/quickstart-control-device-dotnet).
+    * Open AzureIoTHub.cs and find the following section:
+    ```CSharp
+    //
+    // Note: this connection string is specific to the device "map-display". To configure other devices,
+    // see information on iothub-explorer at http://aka.ms/iothubgetstartedVSCS
+    //
+    const string deviceConnectionString = "<replace with your Azure IoT hub device connection string>";
+    ```
+    * Replace `deviceConnectionString` with connection string obtained from IoT hub in the previous step.
+    
+4. Setup Azure Maps web control
+    * Get your Azure Maps account key. If you don't have one, please follow instructions in [demo app quickstart](https://docs.microsoft.com/en-us/azure/azure-maps/quick-demo-map-app) to create account and obtain the account key.
+    * Open AzureMapDemo.html and find the following section:
+    ```Javascript
+    var subscriptionKey = "<replace with your Azure Maps account key>";
+        var map = new atlas.Map("map", {
+            "subscription-key": subscriptionKey,
+            center: [-118.270293, 34.039737],
+            zoom: 14
+        });
+    ```
+    * Replace `subscriptionKey` value with your Azure Maps account key.
 
-- OS
-- Library version
-- ...
-
-### Installation
-
-(ideally very short)
-
-- npm install [package name]
-- mvn install
-- ...
-
-### Quickstart
-(Add steps to get up and running quickly)
-
-1. git clone [repository clone url]
-2. cd [respository name]
-3. ...
-
-
-## Demo
+## Running the app
 
 A demo app is included to show how to use the project.
 
@@ -48,10 +59,9 @@ To run the demo, follow these steps:
 2.
 3.
 
-## Resources
+## More information
 
-(Any additional resources or related projects)
+- [Azure Maps Documentation](https://docs.microsoft.com/en-us/azure/azure-maps/)
+- [How to use the Azure Maps Map Control](https://docs.microsoft.com/en-us/azure/azure-maps/how-to-use-map-control)
+- [Azure IoT Hub Documentation](https://docs.microsoft.com/azure/iot-hub/)
 
-- Link to supporting information
-- Link to similar sample
-- ...

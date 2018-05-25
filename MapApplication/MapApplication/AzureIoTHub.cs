@@ -28,13 +28,8 @@ class AzureIoTHub
     public static async Task SendDeviceToCloudMessageAsync()
     {
         CreateClient();
-#if WINDOWS_UWP
         var str = "{\"deviceId\":\"map-display\",\"messageId\":1,\"text\":\"Hello, Cloud from a UWP C# app!\"}";
-#else
-        var str = "{\"deviceId\":\"map-display\",\"messageId\":1,\"text\":\"Hello, Cloud from a C# app!\"}";
-#endif
         var message = new Message(Encoding.ASCII.GetBytes(str));
-
         await deviceClient.SendEventAsync(message);
     }
 
