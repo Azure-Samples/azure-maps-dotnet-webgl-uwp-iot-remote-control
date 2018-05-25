@@ -1,12 +1,18 @@
 ---
-services: azure-maps
-platforms: dotnet
+services: azure-maps, iot-hub
+platforms: dotnet, uwp, javascript
 author: ihvo
 ---
 
 # Developing a .NET UWP application using Azure Maps, IoT hub and Bot service
 
 This is a sample application that shows how Azure Maps, IoT hub and Bot service API can work together. We will extend the Azure Maps browser application to create a remotely controlled interactive map using Azure IoT and Azure Maps services.
+
+## Repository content
+
+[MapApplication](https://github.com/Azure-Samples/azure-maps-dotnet-webgl-uwp-iot-remote-control/MapApplication) contains source code for the sample UWP application that uses Azure Maps to display map control and connects to Azure IoT hub as a device to receive commands.
+
+[MapBot](https://github.com/Azure-Samples/azure-maps-dotnet-webgl-uwp-iot-remote-control/MapBot) contains source for the sample ASP.NET application using Bot framework and LUIS service to accept user input and connects to Azure IoT as a service to send commands to UWP application.
 
 ## Prerequisites
 
@@ -49,15 +55,28 @@ Before you can run this sample, you must have the following prerequisites:
 
 ## Running the app
 
-A demo app is included to show how to use the project.
+1. Select build platform x64 for the project MapApplication.
+2. Build the MapApplication and click Run.
 
-To run the demo, follow these steps:
+Your main window should display map and a search box:
 
-(Add steps to start up the demo)
+![Main window](./Docs/Media/readme/Image1.png)
 
-1.
-2.
-3.
+Try sending direct commands from your IoT hub instance. Implemented commands are "SearchFuzzy" (expects search term as body text), "ZoomIn" and "ZoomOut".
+
+![Direct commands](./Docs/Media/readme/Image2.png)
+
+At this point you have built a functioning UWP application which displays the map and responds to remote commands from IoT hub.
+
+## Setting up bot service
+
+You can following steps from [Creating MapBot service with LUIS](https://github.com/Azure-Samples/azure-maps-dotnet-webgl-uwp-iot-remote-control/Docs/create-luis-bot-with-bot-service.md) to setup your instance of bot service that communicates with MapApplication via IoT hub.
+
+Alternatively, you could build and deploy bot service using source code available in the [MapBot](https://github.com/Azure-Samples/azure-maps-dotnet-webgl-uwp-iot-remote-control/MapBot) subfolder.
+
+In order to run this service from source code you need to:
+1. Open `Microsoft.Azure.Maps.Sample.LuisBot.sln` in Visual Studio.
+2. {TODO}
 
 ## More information
 
