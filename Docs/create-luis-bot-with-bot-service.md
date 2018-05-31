@@ -1,11 +1,11 @@
-In this guid we will build a sample Bot service that will remotely control the MapApplication using text input. This service can also be enabled as Cortana skill to support voice commands.
+In this guide we will build a sample Bot service that will remotely control the MapApplication using text input. This service can also be enabled as Cortana skill to support voice commands.
 
 ## Create a Language Understanding bot with Bot Service
 
 1. In the Azure portal, select Create new resource in the menu blade and click See all.
 2. In the search box, search for Web App Bot.
 3. In the Bot Service blade, provide the required information, and click Create. This creates and deploys the bot service and LUIS app to Azure.
-    * Set App name to your bot’s name. The name is used as the subdomain when your bot is deployed to the cloud (for example, mynotesbot.azurewebsites.net). This name is also used as the name of the LUIS app associated with your bot. Copy it to use later, to find the LUIS app associated with the bot.
+    * Set App name to your bot’s name. The name is used as the subdomain when your bot is deployed to the cloud (for example, mymapbot.azurewebsites.net). This name is also used as the name of the LUIS app associated with your bot. Copy it to use later, to find the LUIS app associated with the bot.
     * Select the subscription, resource group, App service plan, and location.
     * Select the Language understanding (C#) template for the Bot template field.
     ![Web App Bot Dialog](./Media/create-luis-bot-with-bot-service/Image1.png)
@@ -116,6 +116,70 @@ The following steps add the Maps.SearchFuzzy, Maps.ZoomIn, and Maps.ZoomOut inte
         }
 
 ```
+
+5. Add nuget packages with IoT client library 
+```
+  <package id="Microsoft.Azure.Amqp" version="2.1.3" targetFramework="net46" />
+  <package id="Microsoft.Azure.Devices" version="1.4.1" targetFramework="net46" />
+  <package id="Microsoft.Azure.Devices.Shared" version="1.3.0" targetFramework="net46" />
+```
+
+6. Add the following references to any of _ItemGroup_ elements
+```
+    <Reference Include="Microsoft.Azure.Amqp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Azure.Amqp.2.1.3\lib\net45\Microsoft.Azure.Amqp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Devices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Azure.Devices.1.4.1\lib\net451\Microsoft.Azure.Devices.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Devices.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Azure.Devices.Shared.1.3.0\lib\net45\Microsoft.Azure.Devices.Shared.dll</HintPath>
+   </Reference>
+```
+
+7. Add the following binding redirect to the <assemblyBinding> section of **web.config**
+```
+    <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Azure.Amqp" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-2.1.0.0" newVersion="2.1.0.0" />
+    </dependentAssembly>
+ ```
+
+## Build the bot
+Right-click on build.cmd in the code editor and choose Run from Console.
+
+![Run from Console](./Media/create-luis-bot-with-bot-service/Image6.png)
+
+### Update IoT hub connection string
+1. Open Azure Portal and navigate to IoT hub instance where you device is connected to (created in part 1).
+2. Open 'Shared access policies' tab and select the 'service' policy.
+3. Copy connection string with primary or secondary key.
+4. Go back to the web application with your bot's name and open 'application settings'.
+5. Add new setting with the name 'IoTHubConnectionString' and value copied from the Iot hub.
+
+![Run from Console](./Media/create-luis-bot-with-bot-service/Image7.png)
+
+## Test the bot
+In the Azure Portal, click on **Test in Web Chat** to test the bot. Try typing messages "search for Seattle", "Zoom in", "Zoom out".
+
+![Run from Console](./Media/create-luis-bot-with-bot-service/Image8.png)
+
+The app should respond and display search results or zoom map content.
+
+![Run from Console](./Media/create-luis-bot-with-bot-service/Image9.png)
+
+**Tip**
+
+If your bot code runs into an issue, check the following:
+* You have [built the bot](https://docs.microsoft.com/en-us/azure/bot-service/dotnet/bot-builder-dotnet-luis-dialogs?view=azure-bot-service-3.0#build-the-bot).
+* Your bot code defines a handler for every intent in your LUIS app.
+
+If you find that your bot doesn't always recognize the correct intent or entities, improve your LUIS app's performance by giving it more example utterances to train it. You can retrain your LUIS app without any modification to your bot's code.
+
+For instance, add more utterances to Map.SearchFuzzy intent with different 'location' part. E.g. "search for Boston", "search for New York", "search for London". Make sure location entity is marked in every utterance too. See [Add example utterances](https://docs.microsoft.com/en-us/azure/cognitive-services/LUIS/add-example-utterances) and [train and test your LUIS app](https://docs.microsoft.com/en-us/azure/cognitive-services/LUIS/train-test).
+
+## Next steps
+Register Cortana channel in bot settings and test map application control using voice commands.
 
 ## Reference
 [Connect an existing bot to Cortana](https://docs.microsoft.com/en-us/azure/bot-service/bot-service-channel-connect-cortana?view=azure-bot-service-3.0)

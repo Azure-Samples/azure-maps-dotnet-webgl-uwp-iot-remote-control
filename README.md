@@ -74,9 +74,18 @@ You can following steps from [Creating MapBot service with LUIS](https://github.
 
 Alternatively, you could build and deploy bot service using source code available in the [MapBot](https://github.com/Azure-Samples/azure-maps-dotnet-webgl-uwp-iot-remote-control/MapBot) subfolder.
 
-In order to run this service from source code you need to:
-1. Open `Microsoft.Azure.Maps.Sample.LuisBot.sln` in Visual Studio.
-2. {TODO}
+### Build and debug
+
+1. Clone repository or download source code and extract in local folder
+2. Open `MapBot\Microsoft.Azure.Maps.Sample.LuisBot.sln` in Visual Studio
+3. Build and run the bot
+4. Download and run [botframework-emulator](https://emulator.botframework.com/)
+5. Connect the emulator to http://localhost:3987
+
+### Publish to Azure
+
+* In Visual Studio, right click on `Mapbot\Microsoft.Azure.Maps.Sample.LuisBot.sln` and select 'Publish'
+* Follow dialog steps to create App service instance and upload the code
 
 ## More information
 
