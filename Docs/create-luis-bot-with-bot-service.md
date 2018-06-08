@@ -21,7 +21,7 @@ Confirm that the bot has been deployed by checking the **Notifications**. The n
 Once the bot is registered, click Test in Web Chat to open the Web Chat pane. Type "hello" in Web Chat. The bot responds by saying "1: You said hello". This confirms that the bot has received your message and passed it to a default LUIS app that it created. This default LUIS app detected a Greeting intent.
 
 ## Modify the LUIS app
-Log in to [laui.ai](https://www.luis.ai) using the same account you use to log in to Azure. Click on **My apps**. In the list of apps, find the app that begins with the name specified in **App name** in the **Bot Service** blade when you created the Bot Service.
+Log in to [LUIS.ai](https://www.luis.ai) using the same account you use to log in to Azure. Click on **My apps**. In the list of apps, find the app that begins with the name specified in **App name** in the **Bot Service** blade when you created the Bot Service.
 
 The LUIS app starts with 4 intents: Cancel, Greeting, Help, and None.
 
@@ -181,5 +181,4 @@ For instance, add more utterances to Map.SearchFuzzy intent with different 'loca
 ## Next steps
 Register Cortana channel in bot settings and test map application control using voice commands.
 
-## Reference
 [Connect an existing bot to Cortana](https://docs.microsoft.com/en-us/azure/bot-service/bot-service-channel-connect-cortana?view=azure-bot-service-3.0)
