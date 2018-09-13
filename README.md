@@ -29,16 +29,39 @@ Before you can run this sample, you must have the following prerequisites:
 1. Clone this repository using `git clone git@github.com:azure-samples/azure-maps-dotnet-webgl-uwp-iot-remote-control.git`
 2. Open `MapApplication\MapApplication.sln` in VS2017.
 3. Setup device connection string
-    * Register a device named `map-display` and obtain device connection string by following steps from the [Device Control Quickstart](https://docs.microsoft.com/en-us/azure/iot-hub/quickstart-control-device-dotnet).
-    * Open AzureIoTHub.cs and find the following section:
+    * Make sure you have [IoT Hub connected service extension for VS](https://marketplace.visualstudio.com/items?itemName=MicrosoftIoT.ConnectedServiceforAzureIoTHub) installed.
+    * Right click **MapApplication** project in solution explorer and select **Add > Connected service** menu item
+    * In the dialog that opens choose **Azure IoT hub**
+    ![Connected services](./Docs/Media/readme/Image4.png)
+    * Sign in with account that has access to Azure subscription, select **Hardcode shared access key** got to the next step.
+    ![Connected services sign in](./Docs/Media/readme/Image3.png)
+    * On the **IoT hub** tab select existing or provision new IoT hub instance.
+    * On **Device** tab create new device named `map-display` and select **Finish**.
+    * This extension will have requied nuget package installed and `deviceConnectionString` property in AzureIoTHub.cs populated with a connection string for `map-display`.
+    * Open AzureIoTHub.cs and add the following method at the end of the class definition:
     ```CSharp
-    //
-    // Note: this connection string is specific to the device "map-display". To configure other devices,
-    // see information on iothub-explorer at http://aka.ms/iothubgetstartedVSCS
-    //
-    const string deviceConnectionString = "<replace with your Azure IoT hub device connection string>";
+    public static async Task RegisterDirectMethodAsync(string methodName, Func<string, Task> action)
+    {
+        CreateClient();
+
+        System.Diagnostics.Debug.WriteLine($"Registering a callback for {methodName}");
+        await deviceClient.SetMethodHandlerAsync(methodName,
+            async delegate (MethodRequest methodRequest, object userContext)
+            {
+                System.Diagnostics.Debug.WriteLine($"{methodName} has been called");
+                try
+                {
+                    await action(methodRequest.DataAsJson);
+                    return new MethodResponse(200);
+                }
+                catch (Exception ex)
+                {
+                    return new MethodResponse(Encoding.UTF8.GetBytes(ex.ToString()), 500);
+                }
+            }, null);
+    }
     ```
-    * Replace `deviceConnectionString` with connection string obtained from IoT hub in the previous step.
+    * Property `deviceConnectionString` in AzureIoTHub.cs will contain a connection string populated with SAS for device `map-display`.
     
 4. Setup Azure Maps web control
     * Get your Azure Maps account key. If you don't have one, please follow instructions in [demo app quickstart](https://docs.microsoft.com/en-us/azure/azure-maps/quick-demo-map-app) to create account and obtain the account key.
