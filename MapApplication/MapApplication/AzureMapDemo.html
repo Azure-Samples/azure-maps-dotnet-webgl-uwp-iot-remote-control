@@ -196,7 +196,7 @@
     </style>
 </head>
 
-body>
+<body>
 
     <div id="search">
         <div class="search-input-box">
@@ -218,21 +218,39 @@ body>
             zoom: 14
         });
         
-        map.addEventListener('load', function(){
+        map.addEventListener('load', function () {
 
-        /* Search Info Panel */
-        var searchInfoPanelBody = document.getElementById("search-info");
+            /* Search Info Panel */
+            var searchInfoPanelBody = document.getElementById("search-info");
 
-        /* Search */
-        var searchLayerName = "search-pins";
-        var searchPins = [];
-        var searchPopup = new atlas.Popup();
-        map.addPins(searchPins, {
-            name: searchLayerName,
-            cluster: false,
-            icon: "pin-round-darkblue"
+            /* Search */
+            var searchLayerName = "search-pins";
+            var searchPins = [];
+            var searchPopup = new atlas.Popup();
+
+            map.addPins(searchPins, {
+                name: searchLayerName,
+                cluster: false,
+                icon: "pin-round-darkblue"
+            });
+
+            map.addEventListener("click", searchLayerName, function (event) {
+                var pin = event.features[0];
+
+                searchPopup.setPopupOptions({
+                    position: pin.geometry.coordinates,
+                    content: buildPoiPopupContent({
+                        name: pin.properties.name,
+                        address: pin.properties.address,
+                        phone: pin.properties.phone,
+                        url: pin.properties.url
+                    })
+                });
+
+                searchPopup.open(map);
+            });
+
         });
-
 
         function boundingBoxOfPositions(positions) {
             var swLon = 180;
@@ -309,22 +327,6 @@ body>
 
             return poiContentBox;
         }
-
-        map.addEventListener("click", searchLayerName, function (event) {
-            var pin = event.features[0];
-
-            searchPopup.setPopupOptions({
-                position: pin.geometry.coordinates,
-                content: buildPoiPopupContent({
-                    name: pin.properties.name,
-                    address: pin.properties.address,
-                    phone: pin.properties.phone,
-                    url: pin.properties.url
-                })
-            });
-
-            searchPopup.open(map);
-        });
 
         var shouldChangeCamera = false;
         function searchResultsHandler() {
@@ -529,14 +531,12 @@ body>
 
             xhttp.open("GET", url, true);
             xhttp.send();
-        }
+        };
 
         var searchInput = document.getElementById("search-input");
         searchInput.addEventListener("keyup", function (e) {
             shouldChangeCamera = (e.keyCode === 13) ? true : false;
             search(searchResultsHandler);
-        });           
-            
         });
 
         // Logic For Zoom In Button
