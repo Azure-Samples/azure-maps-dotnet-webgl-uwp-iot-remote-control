@@ -32,9 +32,9 @@ Before you can run this sample, you must have the following prerequisites:
     * Make sure you have [IoT Hub connected service extension for VS](https://marketplace.visualstudio.com/items?itemName=MicrosoftIoT.ConnectedServiceforAzureIoTHub) installed.
     * Right click **MapApplication** project in solution explorer and select **Add > Connected service** menu item
     * In the dialog that opens choose **Azure IoT hub**
-    ![Connected services](./Docs/Media/readme/Image4.png)
+    ![Connected services](./Docs/Media/Readme/Image4.png)
     * Sign in with account that has access to Azure subscription, select **Hardcode shared access key** got to the next step.
-    ![Connected services sign in](./Docs/Media/readme/Image3.png)
+    ![Connected services sign in](./Docs/Media/Readme/Image3.png)
     * On the **IoT hub** tab select existing or provision new IoT hub instance.
     * On **Device** tab create new device named `map-display` and select **Finish**.
     * This extension will have requied nuget package installed and `deviceConnectionString` property in AzureIoTHub.cs populated with a connection string for `map-display`.
